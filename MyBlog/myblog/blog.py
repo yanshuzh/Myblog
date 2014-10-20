@@ -45,9 +45,18 @@ class LifeHandler(BaseHandler,GetDBdata):
         self.render("newlist.html",posts=posts,total_record=int(total_record),record=record)
 
 
-class MoodHandler(BaseHandler):
-    def get(self):
-        self.render("moodlist.html")
+class MoodHandler(BaseHandler,GetMoodDBData):
+    def get(self,current_moodrecord):
+        total_moodrecord = self.get_total_moodrecord(1,5)
+        moodposts = self.get_current_record_moodpost(int(current_moodrecord),5)
+        before_moodrecord = 1 if int(current_moodrecord)<=1 else (int(current_moodrecord)-1)
+        after_moodrecord = total_moodrecord if int(current_moodrecord)+1 > total_moodrecord else (int(current_moodrecord)+1)
+        moodrecord = [before_moodrecord,int(current_moodrecord),after_moodrecord]
+        if not moodposts:pass
+            #self.redirect("/compose")
+            #return
+        self.render("moodlist.html",moodposts=moodposts,total_moodrecord=int(total_moodrecord),moodrecord=moodrecord)
+
 
 class DetailedHandler(BaseHandler,GetDBdata):
     def get(self,postid):
@@ -134,6 +143,17 @@ class AuthMoodHandler(BaseHandler,GetMoodDBData):
         after_moodrecord = total_moodrecord if int(current_moodrecord)+1 > total_moodrecord else (int(current_moodrecord)+1)
         moodrecord = [before_moodrecord,int(current_moodrecord),after_moodrecord]
         self.render("admin/mood.html",moodposts=moodposts,total_moodrecord=int(total_moodrecord),moodrecord=moodrecord)
+    @tornado.web.authenticated
+    def post(self,current_moodrecord):
+        mycheckbox=self.get_arguments("checkbox")
+        #self.render("admin/test.html",mycheckbox=mycheckbox)
+        for moodid in mycheckbox:
+            self.delete_moodpost_record_by_id(int(moodid))
+        self.redirect("/admin/mood/1")
+
+        
+
+
 
 class AuthNewArticleHandler(BaseHandler,GetDBdata):
     @tornado.web.authenticated
@@ -207,7 +227,7 @@ handlers = [
     (r"/", HomeHandler),
     (r"/about", AboutHandler),
     (r"/newlist/(\d+)", LifeHandler),
-    (r"/moodlist", MoodHandler),
+    (r"/moodlist/(\d+)", MoodHandler),
     (r"/detailed/(\d+)", DetailedHandler),
     (r"/admin/login", AuthLoginHandler),
     (r"/admin/about",AuthAboutHandler),

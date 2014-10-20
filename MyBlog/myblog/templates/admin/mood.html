@@ -8,7 +8,7 @@
             </div>
             <div class="block-content collapse in">
                 <div class="span12">
-                    <form class="form-horizontal">
+                    <form method="post" action="/admin/mood/{{moodrecord[1]}}"class="form-horizontal">
                         <fieldset>
                         <legend>Mood List</legend>
                         <div class="control-group">
@@ -18,8 +18,13 @@
                         </script>
                         {% for moodpost in moodposts %}
                         <li>
-                            <a href="/admin/resultarticle/{{moodpost.id}}"><b>{{moodpost.content}}</b>&nbsp;&nbsp;&nbsp;<span>发布时间：{{moodpost.published}}</span></a>
-                            <div class="line"></div>
+                            <div style="width:600px;overflow:hidden">
+                                <a><b>{{moodpost.content}}</b></a>
+                            </div>
+                            <div class="lines"></div>
+                            <div>
+                                <span>发布时间：{{moodpost.published}}<input class="muted pull-right" type="checkbox" name="checkbox" value="{{moodpost.id}}"></input></span>
+                            </div>
                         </li>
                         {% end %}
                         </ol>
@@ -28,8 +33,13 @@
                         {% else %}
                         <div class="muted pull-right"><b>总页数：</b><a href="/admin/mood/{{total_moodrecord}}" title="Total record"><b>{{total_moodrecord}}</b></a>&nbsp;&nbsp;<a href="/admin/mood/{{moodrecord[0]}}"><b>上-页</b></a>&nbsp;&nbsp;<b>{{moodrecord[1]}}</b>&nbsp;&nbsp;<a href="/admin/mood/{{moodrecord[2]}}"><b>下-页</b></a></div>
                         {% end %}
+                        </div>
+                        <div class="muted pull-right">
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                            <button type="reset" class="btn">Cancel</button>
                         </div>     
                        </fieldset>
+                    {% raw xsrf_form_html() %}
                     </form>
                 </div>
             </div>

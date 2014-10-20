@@ -11,10 +11,10 @@
                         <fieldset>
                         <legend>Edit</legend>
                         <div class="control-group">
-                            <input name="article_id" type="text" class="span6" id="typeahead" data-provide="typeahead" value="{{post.id}}" readonly="readonly">
+                            <b>BlogID: </b><input name="article_id" type="text" class="span6" id="typeahead" data-provide="typeahead" value="{{post.id}}" readonly="readonly">
                         </div>                      
                         <div class="control-group">
-                            <input name="article_title" type="text" class="span6" id="typeahead" data-provide="typeahead" placeholder="Blog Title" value="{{post.title}}">
+                            <b>&nbsp; Title: &nbsp;&nbsp;</b><input name="article_title" type="text" class="span6" id="typeahead" data-provide="typeahead" placeholder="Blog Title" value="{{post.title}}">
                         </div>
                         <div class="control-group">
                             <textarea name="article_content" class="input-xlarge textarea" placeholder="Enter text ..." style="width: 880px; height: 600px">{{post.markdown}}</textarea>

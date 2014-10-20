@@ -9,8 +9,8 @@
             <div class="block-content collapse in">
                 <div class="span12">
                     <fieldset>
-                        <legend>
-                            <div class="muted pull-left">Article List</div>
+                    <legend>
+                        <div class="muted pull-left" style="color:black;">Article List</div>
                             <div class="muted pull-right">
                                 <form method="post" action="/admin/search"class="form-horizontal">
                                     <div class="controls">
@@ -28,8 +28,11 @@
                         </script>
                         {% for post in posts %}
                         <li>
-                            <a href="/admin/resultarticle/{{post.id}}"><b>{{post.title}}</b>&nbsp;&nbsp;&nbsp;<span>发布时间：{{post.published}}</span></a>
-                            <div class="line"></div>
+                            <div style="width:840px;overflow:hidden">
+                            <a href="/admin/resultarticle/{{post.id}}"><b>{{post.title}}</b></a></div>
+                            <div>
+                            <span>发布时间：{{post.published}}</span>
+                            </div>
                         </li>
                         {% end %}
                         </ol>
@@ -40,6 +43,7 @@
                         {% end %}
                         </div>                                     
                     </fieldset>
+
                 </div>
             </div>
     </div>
