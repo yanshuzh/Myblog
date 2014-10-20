@@ -1,0 +1,46 @@
+﻿{% extends "base.html" %}
+{% block body %}
+<div class="span9" id="content">
+    <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">New article</div>
+            </div>
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <form method="post" action="newarticle"class="form-horizontal">
+                        <fieldset>
+                        <legend>Edit New</legend>
+                        <div class="control-group">
+                            <input name="article_title" type="text" class="span6" id="typeahead" data-provide="typeahead" placeholder="Blog Title">
+                        </div>
+                        <div class="control-group">
+                            <div >
+                            <textarea name="article_content" class="input-xlarge textarea" placeholder="Blog Content ..." style="width: 880px; height: 600px"></textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div>
+                                <select name="article_classify" id="select01" class="chzn-select">
+                                <option>something</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <input class="input-file uniform_on" id="fileInput" type="file">
+                        </div>
+                        <div class="muted pull-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="reset" class="btn">Cancel</button>
+                        </div>
+                        </fieldset>
+                    {% raw xsrf_form_html() %}
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>                
+{% end %}

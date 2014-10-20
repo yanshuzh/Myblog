@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+<title>个人博客</title>
+<meta name="keywords" content="个人博客" />
+<meta name="description" content="寻梦主题的个人博客。" />
+<link href="{{static_url('css/base.css')}}" rel="stylesheet">
+{% block header %}
+{% end %}
+<!--[if lt IE 9]>
+<script src="js/modernizr.js"></script>
+<![endif]-->
+</head>
+<body>
+<header>
+  <div id="logo"><a href="/"></a></div>
+  <nav class="topnav" id="topnav"><a href="/"><span>首页</span><span class="en">Protal</span></a><a href="/about"><span>关于我</span><span class="en">About</span></a><a href="/newlist/1"><span>生活</span><span class="en">Life</span></a><a href="/moodlist"><span>碎言碎语</span><span class="en">Doing</span></a></nav>
+  </nav>
+</header>
+{% block body %}
+{% end %}
+<footer>
+  <p>Design by yanshuzh <a href="http://www.miitbeian.gov.cn/" target="_blank">lab501</a> <a href="/">网站统计</a></p>
+</footer>
+<script src="{{static_url('js/silder.js')}}"></script>
+</body>
+</html>

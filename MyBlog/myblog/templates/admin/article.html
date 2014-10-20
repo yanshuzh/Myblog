@@ -1,0 +1,47 @@
+﻿{% extends "base.html" %}
+{% block body %}
+<div class="span9" id="content">
+    <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">Edit Article</div>
+                <div class="muted pull-right"><a href="/admin/newarticle">New Article</a></div>
+            </div>
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <fieldset>
+                        <legend>
+                            <div class="muted pull-left">Article List</div>
+                            <div class="muted pull-right">
+                                <form method="post" action="/admin/search"class="form-horizontal">
+                                    <div class="controls">
+                                    <input name="search_title" type="text" class="span6" id="typeahead">
+                                    <button type="submit" class="btn">Search</button>
+                                </div>
+                                {% raw xsrf_form_html() %}
+                                </form>                         
+                            </div>
+                        </legend>
+                        <div class="control-group">
+                        <script type="text/javascript">
+                        var startindex = ({{record[1]}}-1)*10+1
+                        document.write("<ol start="+startindex+">")
+                        </script>
+                        {% for post in posts %}
+                        <li>
+                            <a href="/admin/resultarticle/{{post.id}}"><b>{{post.title}}</b>&nbsp;&nbsp;&nbsp;<span>发布时间：{{post.published}}</span></a>
+                            <div class="line"></div>
+                        </li>
+                        {% end %}
+                        </ol>
+                        {% if total_record == 1 %}
+                        <div class="muted pull-right"><b>总页数：</b><a title="Total record"><b>{{total_record}}</b></a></div>
+                        {% else %}
+                        <div class="muted pull-right"><b>总页数：</b><a href="/admin/article/{{total_record}}" title="Total record"><b>{{total_record}}</b></a>&nbsp;&nbsp;<a href="/admin/article/{{record[0]}}"><b>上-页</b></a>&nbsp;&nbsp;<b>{{record[1]}}</b>&nbsp;&nbsp;<a href="/admin/article/{{record[2]}}"><b>下-页</b></a></div>
+                        {% end %}
+                        </div>                                     
+                    </fieldset>
+                </div>
+            </div>
+    </div>
+</div>                
+{% end %}

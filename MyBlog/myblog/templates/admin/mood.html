@@ -1,0 +1,38 @@
+﻿{% extends "base.html" %}
+{% block body %}
+<div class="span9" id="content">
+    <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">Edit Mood</div>
+                <div class="muted pull-right"><a href="/admin/moodnew">New Mood</a></div>
+            </div>
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <form class="form-horizontal">
+                        <fieldset>
+                        <legend>Mood List</legend>
+                        <div class="control-group">
+                        <script type="text/javascript">
+                        var startindex = ({{moodrecord[1]}}-1)*10+1
+                        document.write("<ol start="+startindex+">")
+                        </script>
+                        {% for moodpost in moodposts %}
+                        <li>
+                            <a href="/admin/resultarticle/{{moodpost.id}}"><b>{{moodpost.content}}</b>&nbsp;&nbsp;&nbsp;<span>发布时间：{{moodpost.published}}</span></a>
+                            <div class="line"></div>
+                        </li>
+                        {% end %}
+                        </ol>
+                        {% if total_moodrecord == 1 %}
+                        <div class="muted pull-right"><b>总页数：</b><a title="Total record"><b>{{total_moodrecord}}</b></a></div>
+                        {% else %}
+                        <div class="muted pull-right"><b>总页数：</b><a href="/admin/mood/{{total_moodrecord}}" title="Total record"><b>{{total_moodrecord}}</b></a>&nbsp;&nbsp;<a href="/admin/mood/{{moodrecord[0]}}"><b>上-页</b></a>&nbsp;&nbsp;<b>{{moodrecord[1]}}</b>&nbsp;&nbsp;<a href="/admin/mood/{{moodrecord[2]}}"><b>下-页</b></a></div>
+                        {% end %}
+                        </div>     
+                       </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>                
+{% end %}

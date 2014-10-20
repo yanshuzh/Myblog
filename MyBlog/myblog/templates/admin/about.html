@@ -1,0 +1,30 @@
+﻿{% extends "base.html" %}
+{% block body %}
+<div class="span9" id="content">
+    <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">Just About me</div>
+            </div>
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <form method="post" action="/admin/about" class="form-horizontal">
+                      <fieldset>
+                        <legend>Edit</legend>
+                        <div class="control-group">
+                          <label class="control-label" for="textarea2">Content</label>
+                          <div class="controls">
+                         <textarea name="aboutme_text" class="input-xlarge textarea" placeholder="{{ aboutme_markdown }}" style="width: 620px; height: 200px"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-actions">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                      <button type="reset" class="btn">Cancel</button>
+                    </div>
+                  </fieldset>
+                  {% raw xsrf_form_html() %}
+                  </form>
+            </div>
+        </div>
+    </div>
+</div>               
+{% end %}
