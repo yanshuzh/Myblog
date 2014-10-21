@@ -22,10 +22,10 @@
                         </div>
                         <div class="control-group">
                             <select name="articleclassifyid" id="select01" class="chzn-select">
-                                <option value="1">日记</option>
-                                <option value="2">程序人生</option>
-                                <option value="3">欣赏</option>
-                                <option value="4">笔记</option>
+                                <option value="1">{{classify[0]}}</option>
+                                <option value="2">{{classify[1]}}</option>
+                                <option value="3">{{classify[2]}}</option>
+                                <option value="4">{{classify[3]}}</option>
                             </select>
                             <script type="text/javascript">
                                 document.getElementById('select01').options[{{post.classifyid}}-1].selected=true;

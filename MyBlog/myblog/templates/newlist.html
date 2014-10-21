@@ -1,6 +1,6 @@
 ﻿{% extends "base.html" %}
 {% block header %}
-<link href="{{static_url('css/style.css')}}" rel="stylesheet">
+<link href="{{static_url('css/newlist.css')}}" rel="stylesheet">
 {% end %}
 {% block body %}
 <article class="blogs">
@@ -37,7 +37,7 @@
 <h3>
       <p>最新文章</p>
     </h3>
-    <ul class="rank">
+    <ul class="paih">
     {% for post in posts %} 
     <li><div style="width:240px;overflow:hidden"><a href="/detailed/{{post.id}}" title="{{post.title}}" target="_blank">{{post.title}}</a></div></li>
     {% end %}

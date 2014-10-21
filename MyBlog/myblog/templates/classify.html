@@ -1,25 +1,25 @@
 ﻿{% extends "base.html" %}
 {% block header %}
-<link href="{{static_url('css/style.css')}}" rel="stylesheet">
+<link href="{{static_url('css/classify.css')}}" rel="stylesheet">
 {% end %}
 {% block body %}
 <article class="blogs">
 <h1 class="t_nav"><span>“慢生活”不是懒惰，放慢速度不是拖延时间，而是让我们在生活中寻找到平衡。</span><a href="/" class="n1">Home</a><a href="/" class="n2">生活</a></h1>
 <div class="newblog left">
-    {% for post in allposts['posts'] %}
-    <h2 style="width:600px;overflow:hidden">{{post.title}}</h2>
-   <p class="dateview"><span>发布时间：{{post.published}}</span><span>作者：yanshu</span><span>分类：[<a href="/classify/{{post.classifyid}}/1">{{post.classifyname}}</a>]</span></p>
+    {% for post in allposts['posts'] %}   
+    <h2 style="width:600px;overflow:hidden">{{post.title }}</h2>
+    <p class="dateview"><span>发布时间：{{post.published }}</span><span>作者：yanshu</span><span>分类：[<a href="/classify/{{post.classifyid}}/1">{{post.classifyname }}</a>]</span></p>
     <figure><img src="{{static_url('images/001.png')}}"></figure>
     <ul class="nlist">
-      <p>{{post.markdown}}</p>
+      <p>{{post.markdown }}</p>
       <a title="/detailed/{{post.id}}" href="/detailed/{{post.id}}" target="_blank" class="readmore">阅读全文>></a>
     </ul>
     <div class="line"></div>
     {% end %}
     <div class="line"></div>
     <div class="blank"></div>
-    {% if total_record == 1 %}
-    <div class="page"><a title="Total record"><b>{{total_record}}</b></a></div>
+    {% if total_record == 1 or total_record==0 %}
+    <div class="page" ><a title="Total record"><b>{{total_record}}</b></a></div>
     {% else %}
     <div class="page"><a href="/classify/{{post.classifyid}}/{{total_record}}" title="Total record"><b>{{total_record}}</b></a><a href="/classify/{{post.classifyid}}/{{record[0]}}">&lt;</a><b>{{record[1]}}</b><a href="/classify/{{post.classifyid}}/{{record[2]}}">&gt;</a></div>
     {% end %}
@@ -27,17 +27,17 @@
 <aside class="right">
    <div class="rnav">
       <ul>
-       <li class="rnav1"><a href="/classify/1/1" target="_blank">日记</a></li>
-       <li class="rnav2"><a href="/classify/2/1" target="_blank">程序人生</a></li>
-       <li class="rnav3"><a href="/classify/3/1" target="_blank">欣赏</a></li>
-       <li class="rnav4"><a href="/classify/4/1" target="_blank">笔记</a></li>
+       <li class="rnav1"><a href="/classify/1/1" target="_blank">{{classify[0]}}</a></li>
+       <li class="rnav2"><a href="/classify/2/1" target="_blank">{{classify[1]}}</a></li>
+       <li class="rnav3"><a href="/classify/3/1" target="_blank">{{classify[2]}}</a></li>
+       <li class="rnav4"><a href="/classify/4/1" target="_blank">{{classify[3]}}</a></li>
      </ul>      
     </div>
 <div class="news">
 <h3>
       <p>最新文章</p>
     </h3>
-    <ul class="rank">
+    <ul class="paih">
     {% for newestpost in allposts['newestposts'] %} 
     <li><div style="width:240px;overflow:hidden"><a href="/detailed/{{newestpost.id}}" title="{{newestpost.title}}" target="_blank">{{newestpost.title}}</a></div></li>
     {% end %}
