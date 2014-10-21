@@ -8,7 +8,7 @@
 <div class="newblog left">
     {% for post in allposts['posts'] %}
     <h2 style="width:600px;overflow:hidden">{{post.title}}</h2>
-   <p class="dateview"><span>发布时间：{{post.published}}</span><span>作者：yanshu</span><span>分类：[<a href="/classify/{{classifyid}}/1">{{classifyname}}</a>]</span></p>
+   <p class="dateview"><span>发布时间：{{post.published}}</span><span>作者：yanshu</span><span>分类：[<a href="/classify/{{post.classifyid}}/1">{{post.classifyname}}</a>]</span></p>
     <figure><img src="{{static_url('images/001.png')}}"></figure>
     <ul class="nlist">
       <p>{{post.markdown}}</p>
@@ -21,7 +21,7 @@
     {% if total_record == 1 %}
     <div class="page"><a title="Total record"><b>{{total_record}}</b></a></div>
     {% else %}
-    <div class="page"><a href="/classify/{{classifyid}}/{{total_record}}" title="Total record"><b>{{total_record}}</b></a><a href="/classify/{{classifyid}}/{{record[0]}}">&lt;</a><b>{{record[1]}}</b><a href="/classify/{{classifyid}}/{{record[2]}}">&gt;</a></div>
+    <div class="page"><a href="/classify/{{post.classifyid}}/{{total_record}}" title="Total record"><b>{{total_record}}</b></a><a href="/classify/{{post.classifyid}}/{{record[0]}}">&lt;</a><b>{{record[1]}}</b><a href="/classify/{{post.classifyid}}/{{record[2]}}">&gt;</a></div>
     {% end %}
 </div>
 <aside class="right">

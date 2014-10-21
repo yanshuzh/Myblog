@@ -12,7 +12,6 @@ class BaseHandler(tornado.web.RequestHandler):
     @property
     def db(self):
         return self.application.db
-
     def get_current_user(self):
         user_email = self.get_secure_cookie("blog_user")
         if not user_email: return None
@@ -20,8 +19,8 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class HomeHandler(BaseHandler,GetDBdata):
     def get(self):
-        newestposts = self.get_sortpost("published",5)
-        bestposts = self.get_sortpost("readcout",5)
+        newestposts = self.get_sortpostby_published(5)
+        bestposts = self.get_sortpostby_readcount(5)
         if not newestposts or not bestposts:pass
             #self.redirect("/compose")
             #return
@@ -46,7 +45,6 @@ class LifeHandler(BaseHandler,GetDBdata):
 
 class ClassifyHandler(BaseHandler,GetDBdata):
     def get(self,classifyid,current_record):
-        classifyname = self.get_classifyname(classifyid)
         total_record = self.get_total_record_by_classify(classifyid)
         posts = self.get_current_record_post_by_classify(int(current_record),5,classifyid)
         before_record = 1 if int(current_record)<=1 else (int(current_record)-1)
@@ -58,7 +56,7 @@ class ClassifyHandler(BaseHandler,GetDBdata):
         newestposts = self.get_sortpost("published",5)
         bestposts = self.get_sortpost("readcout",5)
         allposts = {"posts":posts,"newestposts":newestposts,"bestposts":bestposts}
-        self.render("classify.html",allposts=allposts,total_record=int(total_record),record=record,classifyid=classifyid,classifyname=classifyname)
+        self.render("classify.html",allposts=allposts,total_record=int(total_record),record=record)
         #self.render("test.html",total_record=total_record)
 
 
@@ -181,7 +179,7 @@ class AuthNewArticleHandler(BaseHandler,GetDBdata):
         article = {}
         article["title"] = self.get_argument("articletitle",None)
         article["content"] = self.get_argument("articlecontent",None)
-        article["classify"] = self.get_argument("articleclassify",None)
+        article["classifyid"] = self.get_argument("articleclassifyid",None)
         article["html"] = markdown.markdown(article["content"])
         self.add_post_record(article)
         self.redirect("/admin/newarticle")

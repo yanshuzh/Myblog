@@ -5,8 +5,11 @@ import math
 
 
 class GetDBdata(object):
-	def get_sortpost(self,orderbase,count):
-		posts = self.db.query("SELECT * FROM posts ORDER BY %s DESC LIMIT %s",orderbase,int(count))
+	def get_sortpostby_published(self,count):
+		posts = self.db.query("SELECT * FROM posts ORDER BY published DESC LIMIT %s",int(count))
+		return posts
+	def get_sortpostby_readcount(self,count):
+		posts = self.db.query("SELECT * FROM posts ORDER BY readcount DESC LIMIT %s",int(count))
 		return posts
 
 	def get_post_by_id(self,postid):
@@ -23,14 +26,14 @@ class GetDBdata(object):
 		return	total_record
 
 	def get_total_record_by_classify(self,classifyid):
-		total_post = self.db.get("SELECT * FROM classify WHERE classifyid=%s",classifyid)
-		total_record = math.ceil(total_post.record/5)
+		total_post = self.db.query("SELECT * FROM posts WHERE classifyid=%s",classifyid)
+		total_record = math.ceil(len(total_post)/5)
 		return total_record
 
-	def get_current_record_post_by_classify(self,current_record,step,classify):
+	def get_current_record_post_by_classify(self,current_record,step,classifyid):
 		start = (int(current_record)-1)*step
 		end = step
-		posts = self.db.query("SELECT * FROM posts WHERE classify=%s ORDER BY published LIMIT %s,%s",classify,start,end)
+		posts = self.db.query("SELECT * FROM posts WHERE classifyid=%s ORDER BY published LIMIT %s,%s",classifyid,start,end)
 		return posts
 
 	def get_current_record_post(self,current_record,step):
@@ -42,24 +45,20 @@ class GetDBdata(object):
 	def delete_post_record(self,article):
 		self.db.execute("DELETE FROM posts WHERE id=%s",article["id"])
 		self.db.execute("UPDATE authors SET record = record-1 WHERE id = %s",int(1))
-		self.db.execute("UPDATE classify SET record = record-1 WHERE classifyid =%s",int(article["classifyid"]))
 
 	def add_post_record(self,article):
-		self.db.execute("INSERT INTO posts (author_id,title,markdown,html,published,classify) VALUES (%s,%s,%s,%s,UTC_TIMESTAMP(),%s)",int(1),article["title"],article["content"],article["html"],int(article["classifyid"]))
+		classify =['日记','程序人生','欣赏','笔记']
+		classifyid = int(article["classifyid"])
+		self.db.execute("INSERT INTO posts (author_id,title,markdown,html,published,classifyid,classifyname) VALUES (%s,%s,%s,%s,UTC_TIMESTAMP(),%s,%s)",int(1),article["title"],article["content"],article["html"],classifyid,classify[classifyid-1])
 		self.db.execute("UPDATE authors SET record = record+1 WHERE id = %s",int(1))
-		self.db.execute("UPDATE classify SET record = record+1 WHERE classifyid = %s",int(article["classifyid"]))
 
 	def change_post_record(self,article):
-		oldclassifyid = self.db.get("SELECT classify FROM posts WHERE id=%s",int(article["id"]))
+		classify =['日记','程序人生','欣赏','笔记']
+		classifyid = int(article["classifyid"])
+		oldclassifyid = self.db.get("SELECT classifyid FROM posts WHERE id=%s",int(article["id"]))
 		#oldclassifyid = oldclassify.classify
-		if oldclassifyid["classify"] != article["classifyid"]:
-			self.db.execute("UPDATE classify SET record = record+1 WHERE classifyid = %s",article["classifyid"])
-			self.db.execute("UPDATE classify SET record = record-1 WHERE classifyid = %s",oldclassifyid["classify"])
-		self.db.execute("UPDATE posts SET title=%s,markdown=%s,html=%s,published=UTC_TIMESTAMP(),classify=%s WHERE id=%s",article["title"],article["content"],article["html"],article["classifyid"],article["id"])
+		self.db.execute("UPDATE posts SET title=%s,markdown=%s,html=%s,published=UTC_TIMESTAMP(),classifyid=%s,classifyname=%s WHERE id=%s",article["title"],article["content"],article["html"],classifyid,classify[classifyid-1],article["id"])
 
-	def get_classifyname(self,classifyid):
-		classifyname = self.db.get("SELECT classifyname FROM classify WHERE classifyid=%s",classifyid)
-		return classifyname["classifyname"]
 class GetMoodDBData(object):
 
 	def get_total_moodrecord(self,authorid,step):

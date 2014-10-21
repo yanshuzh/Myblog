@@ -8,7 +8,7 @@
 <div class="newblog left">
     {% for post in posts %}
     <h2 style="width:600px;overflow:hidden">{{post.title}}</h2>
-   <p class="dateview"><span>发布时间：{{post.published}}</span><span>作者：yanshu</span><span>分类：[<a href="/news/life/">{{classifyname}}</a>]</span></p>
+   <p class="dateview"><span>发布时间：{{post.published}}</span><span>作者：yanshu</span><span>分类：[<a href="/classify/{{post.classifyid}}/1">{{post.classifyname}}</a>]</span></p>
     <figure><img src="{{static_url('images/001.png')}}"></figure>
     <ul class="nlist">
       <p>{{post.markdown}}</p>
