@@ -21,15 +21,15 @@
 
                         </div>
                         <div class="control-group">
-                            <script type="text/javascript">
-                            !!!!!!!!!!!!!
-                            </script>
                             <select name="articleclassifyid" id="select01" class="chzn-select">
                                 <option value="1">日记</option>
                                 <option value="2">程序人生</option>
                                 <option value="3">欣赏</option>
                                 <option value="4">笔记</option>
                             </select>
+                            <script type="text/javascript">
+                                document.getElementById('select01').options[{{post.classifyid}}-1].selected=true;
+                            </script>
                         </div>
                         <div class="muted pull-right">
                             <input type="submit" name="buttonsubmit" class="btn btn-primary" value="Submit"></input>

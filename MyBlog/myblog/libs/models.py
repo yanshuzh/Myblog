@@ -5,6 +5,7 @@ import math
 
 
 class GetDBdata(object):
+
 	def get_sortpostby_published(self,count):
 		posts = self.db.query("SELECT * FROM posts ORDER BY published DESC LIMIT %s",int(count))
 		return posts
@@ -47,17 +48,16 @@ class GetDBdata(object):
 		self.db.execute("UPDATE authors SET record = record-1 WHERE id = %s",int(1))
 
 	def add_post_record(self,article):
-		classify =['日记','程序人生','欣赏','笔记']
 		classifyid = int(article["classifyid"])
-		self.db.execute("INSERT INTO posts (author_id,title,markdown,html,published,classifyid,classifyname) VALUES (%s,%s,%s,%s,UTC_TIMESTAMP(),%s,%s)",int(1),article["title"],article["content"],article["html"],classifyid,classify[classifyid-1])
+		classify = self.db.get("SELECT * FROM classify WHERE classifyid=%s",classifyid)
+
+		self.db.execute("INSERT INTO posts (author_id,title,markdown,html,published,classifyid,classifyname) VALUES (%s,%s,%s,%s,UTC_TIMESTAMP(),%s,%s)",int(1),article["title"],article["content"],article["html"],classifyid,classify.classifyname)
 		self.db.execute("UPDATE authors SET record = record+1 WHERE id = %s",int(1))
 
 	def change_post_record(self,article):
-		classify =['日记','程序人生','欣赏','笔记']
 		classifyid = int(article["classifyid"])
-		oldclassifyid = self.db.get("SELECT classifyid FROM posts WHERE id=%s",int(article["id"]))
-		#oldclassifyid = oldclassify.classify
-		self.db.execute("UPDATE posts SET title=%s,markdown=%s,html=%s,published=UTC_TIMESTAMP(),classifyid=%s,classifyname=%s WHERE id=%s",article["title"],article["content"],article["html"],classifyid,classify[classifyid-1],article["id"])
+		classify = self.db.get("SELECT * FROM classify WHERE classifyid=%s",classifyid)
+		self.db.execute("UPDATE posts SET title=%s,markdown=%s,html=%s,published=UTC_TIMESTAMP(),classifyid=%s,classifyname=%s WHERE id=%s",article["title"],article["content"],article["html"],classifyid,classify.classifyname,article["id"])
 
 class GetMoodDBData(object):
 
@@ -93,8 +93,14 @@ class GetUserData(object):
 		user = self.get_user_by_id(userid)
 		return user
 
-
-
-
-
-
+class ClassifyData(object):
+	def set_classify(self,classify):
+		index=1;
+		for classifyname in classify:
+			self.db.execute("UPDATE classify SET classifyname =%s WHERE id = %s",classifyname,index)	
+			self.db.execute("UPDATE posts SET classifyname =%s WHERE classifyid = %s",classifyname,index)
+			index=index+1
+	def get_classify(self):
+		classify = self.db.query("SELECT * FROM classify")
+		classifynamelist = [classify[0].classifyname,classify[1].classifyname,classify[2].classifyname,classify[3].classifyname,] 
+		return classifynamelist

@@ -5,7 +5,7 @@ import re
 import torndb
 import unicodedata
 import tornado.web
-from .libs.models import GetDBdata,GetUserData,GetMoodDBData
+from .libs.models import GetDBdata,GetUserData,GetMoodDBData,ClassifyData
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -31,8 +31,9 @@ class AboutHandler(BaseHandler,GetUserData):
         user = self.get_user_by_id(1)
         self.render("about.html",aboutme_markdown=user.aboutme)
 
-class LifeHandler(BaseHandler,GetDBdata):
+class LifeHandler(BaseHandler,GetDBdata,ClassifyData):
     def get(self,current_record):
+        classify = self.get_classify();
         total_record = self.get_total_record(1,5)
         posts = self.get_current_record_post(int(current_record),5)
         before_record = 1 if int(current_record)<=1 else (int(current_record)-1)
@@ -41,8 +42,8 @@ class LifeHandler(BaseHandler,GetDBdata):
         if not posts:pass
             #self.redirect("/compose")
             #return
-        self.render("newlist.html",posts=posts,total_record=int(total_record),record=record)
-
+        self.render("newlist.html",posts=posts,total_record=int(total_record),record=record,classify=classify)
+        #self.render("test.html",classify=classify)
 class ClassifyHandler(BaseHandler,GetDBdata):
     def get(self,classifyid,current_record):
         total_record = self.get_total_record_by_classify(classifyid)
@@ -53,8 +54,8 @@ class ClassifyHandler(BaseHandler,GetDBdata):
         if not posts:pass
             #self.redirect("/compose")
             #return
-        newestposts = self.get_sortpost("published",5)
-        bestposts = self.get_sortpost("readcout",5)
+        newestposts = self.get_sortpostby_published(5)
+        bestposts = self.get_sortpostby_readcount(5)
         allposts = {"posts":posts,"newestposts":newestposts,"bestposts":bestposts}
         self.render("classify.html",allposts=allposts,total_record=int(total_record),record=record)
         #self.render("test.html",total_record=total_record)
@@ -125,10 +126,16 @@ class AuthAboutHandler(BaseHandler,GetUserData):
         user = self.set_user_aboutme(1,aboutme_markdown)
         self.redirect("/admin/about")
 
-class AuthClassifyHandler(BaseHandler):
+class AuthClassifyHandler(BaseHandler,ClassifyData):
     @tornado.web.authenticated
     def get(self):
-        self.render("admin/classify.html")
+        classify = self.get_classify()
+        self.render("admin/classify.html",classify=classify)
+    @tornado.web.authenticated
+    def post(self):
+        classify = self.get_arguments("classify",None)
+        self.set_classify(classify)
+        self.render("admin/classify.html",classify=classify)
 
 class AuthArticleHandler(BaseHandler,GetDBdata):
     @tornado.web.authenticated
@@ -148,7 +155,6 @@ class AuthArticleHandler(BaseHandler,GetDBdata):
             return
         self.render("admin/newarticle.html") 
 
-
 class AuthMoodHandler(BaseHandler,GetMoodDBData):
     @tornado.web.authenticated
     def get(self,current_moodrecord):
@@ -165,10 +171,6 @@ class AuthMoodHandler(BaseHandler,GetMoodDBData):
         for moodid in mycheckbox:
             self.delete_moodpost_record_by_id(int(moodid))
         self.redirect("/admin/mood/1")
-
-        
-
-
 
 class AuthNewArticleHandler(BaseHandler,GetDBdata):
     @tornado.web.authenticated

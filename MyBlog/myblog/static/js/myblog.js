@@ -13,3 +13,11 @@ function Todeletemood (obj) {
 	}
 }
 
+function InputControl()
+{
+	document.getElementById('classify01').removeAttribute("readonly")
+	document.getElementById('classify02').removeAttribute("readonly")
+	document.getElementById('classify03').removeAttribute("readonly")
+	document.getElementById('classify04').removeAttribute("readonly")
+}
+
