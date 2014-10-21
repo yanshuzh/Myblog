@@ -37,12 +37,29 @@ class LifeHandler(BaseHandler,GetDBdata):
         total_record = self.get_total_record(1,5)
         posts = self.get_current_record_post(int(current_record),5)
         before_record = 1 if int(current_record)<=1 else (int(current_record)-1)
-        after_record = total_record if int(current_record)+1 > total_record else (int(current_record)+1)
+        after_record = int(total_record) if int(current_record)+1 > total_record else (int(current_record)+1)
         record = [before_record,int(current_record),after_record]
         if not posts:pass
             #self.redirect("/compose")
             #return
         self.render("newlist.html",posts=posts,total_record=int(total_record),record=record)
+
+class ClassifyHandler(BaseHandler,GetDBdata):
+    def get(self,classifyid,current_record):
+        classifyname = self.get_classifyname(classifyid)
+        total_record = self.get_total_record_by_classify(classifyid)
+        posts = self.get_current_record_post_by_classify(int(current_record),5,classifyid)
+        before_record = 1 if int(current_record)<=1 else (int(current_record)-1)
+        after_record = int(total_record) if int(current_record)+1 > total_record else (int(current_record)+1)
+        record = [before_record,int(current_record),after_record]
+        if not posts:pass
+            #self.redirect("/compose")
+            #return
+        newestposts = self.get_sortpost("published",5)
+        bestposts = self.get_sortpost("readcout",5)
+        allposts = {"posts":posts,"newestposts":newestposts,"bestposts":bestposts}
+        self.render("classify.html",allposts=allposts,total_record=int(total_record),record=record,classifyid=classifyid,classifyname=classifyname)
+        #self.render("test.html",total_record=total_record)
 
 
 class MoodHandler(BaseHandler,GetMoodDBData):
@@ -162,12 +179,13 @@ class AuthNewArticleHandler(BaseHandler,GetDBdata):
     @tornado.web.authenticated
     def post(self):
         article = {}
-        article["title"] = self.get_argument("article_title",None)
-        article["content"] = self.get_argument("article_content",None)
-        article["classify"] = self.get_argument("atricle_classify",None)
+        article["title"] = self.get_argument("articletitle",None)
+        article["content"] = self.get_argument("articlecontent",None)
+        article["classify"] = self.get_argument("articleclassify",None)
         article["html"] = markdown.markdown(article["content"])
         self.add_post_record(article)
         self.redirect("/admin/newarticle")
+        #self.render("admin/test.html",classify=article["classify"])
 
 class AuthMoodNewHandler(BaseHandler,GetMoodDBData):
     @tornado.web.authenticated
@@ -189,19 +207,20 @@ class AuthResultArticleHandler(BaseHandler,GetDBdata):
     def post(self,articleid):
         buttonsubmit = self.get_argument("buttonsubmit",None)
         buttondelete = self.get_argument("buttondelete",None)
+        article = {}
+        article["id"]=self.get_argument("articleid",None)
+        article["title"] = self.get_argument("articletitle",None)
+        article["content"] = self.get_argument("articlecontent",None)
+        article["html"] = markdown.markdown(article["content"])
+        article["classifyid"] = self.get_argument("articleclassifyid",None)
         if buttonsubmit=="Submit":
-            article = {}
-            article["id"]=self.get_argument("article_id",None)
-            article["title"] = self.get_argument("article_title",None)
-            article["content"] = self.get_argument("article_content",None)
-            article["html"] = markdown.markdown(article["content"])
-            article["classify"] = self.get_argument("atricle_classify",None)
             self.change_post_record(article)
-            post = self.get_post_by_id(articleid)
+            post = self.get_post_by_id(article["id"])
             self.render("admin/resultarticle.html",post=post)
+            #self.render("admin/test.html",articleid=article["id"])
             return
         elif buttondelete=="Delete":
-            self.delete_post_record_by_id(articleid)
+            self.delete_post_record(article)
         else:pass
         self.redirect("/admin/article/1")
 
@@ -227,6 +246,7 @@ handlers = [
     (r"/", HomeHandler),
     (r"/about", AboutHandler),
     (r"/newlist/(\d+)", LifeHandler),
+    (r"/classify/(\d+)/(\d+)", ClassifyHandler),    
     (r"/moodlist/(\d+)", MoodHandler),
     (r"/detailed/(\d+)", DetailedHandler),
     (r"/admin/login", AuthLoginHandler),

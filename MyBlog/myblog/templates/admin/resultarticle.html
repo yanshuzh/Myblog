@@ -11,22 +11,21 @@
                         <fieldset>
                         <legend>Edit</legend>
                         <div class="control-group">
-                            <b>BlogID: </b><input name="article_id" type="text" class="span6" id="typeahead" data-provide="typeahead" value="{{post.id}}" readonly="readonly">
+                            <b>BlogID: </b><input name="articleid" type="text" class="span6" id="typeahead" data-provide="typeahead" value="{{post.id}}" readonly="readonly">
                         </div>                      
                         <div class="control-group">
-                            <b>&nbsp; Title: &nbsp;&nbsp;</b><input name="article_title" type="text" class="span6" id="typeahead" data-provide="typeahead" placeholder="Blog Title" value="{{post.title}}">
+                            <b>&nbsp; Title: &nbsp;&nbsp;</b><input name="articletitle" type="text" class="span6" id="typeahead" data-provide="typeahead" placeholder="Blog Title" value="{{post.title}}">
                         </div>
                         <div class="control-group">
-                            <textarea name="article_content" class="input-xlarge textarea" placeholder="Enter text ..." style="width: 880px; height: 600px">{{post.markdown}}</textarea>
+                            <textarea name="articlecontent" class="input-xlarge textarea" placeholder="Enter text ..." style="width: 880px; height: 600px">{{post.markdown}}</textarea>
 
                         </div>
                         <div class="control-group">
-                            <select name="article_classify" id="select01" class="chzn-select">
-                                <option>something</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <select name="articleclassifyid" id="select01" class="chzn-select">
+                                <option value="1">日记</option>
+                                <option value="2">程序人生</option>
+                                <option value="3">欣赏</option>
+                                <option value="4">笔记</option>
                             </select>
                         </div>
                         <div class="muted pull-right">
