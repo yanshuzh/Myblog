@@ -1,12 +1,12 @@
 ﻿#!/usr/bin/env python
-import markdown
+#import markdown
 import os.path
 import re
 import torndb
 import unicodedata
 import tornado.web
 from .libs.models import GetDBdata,GetUserData,GetMoodDBData,ClassifyData
-
+from .libs.markdown import markdown
 
 class BaseHandler(tornado.web.RequestHandler):
     @property
@@ -132,7 +132,8 @@ class AuthAboutHandler(BaseHandler,GetUserData):
     @tornado.web.authenticated
     def post(self):
         aboutme_text = self.get_argument("aboutme_text",None)
-        aboutme = markdown.markdown(aboutme_text)
+        #aboutme = markdown.markdown(aboutme_text)
+        aboutme = markdown(aboutme_text)
         user = self.set_user_aboutme(1,aboutme)
         self.redirect("/admin/about")
 #文章类别管理，主要是修改类别信息
@@ -172,12 +173,16 @@ class AuthResultArticleHandler(BaseHandler,GetDBdata,ClassifyData):
         article["id"]=self.get_argument("articleid",None)
         article["title"] = self.get_argument("articletitle",None)
         article["content"] = self.get_argument("articlecontent",None)
-        article["html"] = markdown.markdown(article["content"])
+        #article["html"] = markdown.markdown(article["content"])
+        
+        article["html"] =markdown(article["content"])
+        
         article["classifyid"] = self.get_argument("articleclassifyid",None)
         if buttonsubmit=="Submit":
             self.change_post_record(article)
             post = self.get_post_by_id(article["id"])
-            self.render("admin/resultarticle.html",post=post,classify=classify)
+            #self.render("admin/resultarticle.html",post=post,classify=classify)
+            self.render("admin/preview.html",article=article)
             #self.render("admin/test.html",articleid=article["id"])
             return
         elif buttondelete=="Delete":
@@ -196,9 +201,11 @@ class AuthNewArticleHandler(BaseHandler,GetDBdata,ClassifyData):
         article["title"] = self.get_argument("articletitle",None)
         article["content"] = self.get_argument("articlecontent",None)
         article["classifyid"] = self.get_argument("articleclassifyid",None)
-        article["html"] = markdown.markdown(article["content"])
+        #article["html"] = markdown.markdown(article["content"])
+        article["html"] =markdown(article["content"])
         self.add_post_record(article)
-        self.redirect("/admin/newarticle")
+        #self.redirect("/admin/preview")
+        self.render("admin/preview.html",article=article)
 
 #心情状态管理
 class AuthMoodHandler(BaseHandler,GetMoodDBData):
@@ -237,6 +244,7 @@ handlers = [
     (r"/moodlist/(\d+)", MoodHandler),
     (r"/detailed/(\d+)", DetailedHandler),
     (r"/admin/login", AuthLoginHandler),
+    (r"/admin/logout", AuthLogoutHandler),    
     (r"/admin/about",AuthAboutHandler),
     (r"/admin/classify",AuthClassifyHandler),
     (r"/admin/article/(\d+)",AuthArticleHandler),
@@ -244,6 +252,5 @@ handlers = [
     (r"/admin/moodnew",AuthMoodNewHandler),   
     (r"/admin/newarticle",AuthNewArticleHandler),
     (r"/admin/resultarticle/(\d+)",AuthResultArticleHandler),
-    (r"/admin/logout", AuthLogoutHandler),
 ]
 

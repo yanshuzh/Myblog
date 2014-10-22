@@ -9,7 +9,6 @@
     {% for post in posts %}
     <h2 style="width:600px;overflow:hidden">{{post.title}}</h2>
    <p class="dateview"><span>发布时间：{{post.published}}</span><span>作者：yanshu</span><span>分类：[<a href="/classify/{{post.classifyid}}/1">{{post.classifyname}}</a>]</span></p>
-    <figure><img src="{{static_url('images/001.png')}}"></figure>
     <ul class="nlist">
       <p>{{post.markdown}}</p>
       <a title="/detailed/{{post.id}}" href="/detailed/{{post.id}}" target="_blank" class="readmore">阅读全文>></a>

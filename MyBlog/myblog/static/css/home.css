@@ -198,23 +198,23 @@ opacity:1;
 .template li img { width: 142px; height: 80px; background: #FFF; padding: 4px; box-shadow: 0px 0px 2px rgba(0,0,0,.5); display: block; }
 .template li span { color: #F1F0EE; display: block; text-align: center; margin-top: 5px; width: 142px; overflow: hidden; text-overflow: ellipsis; height: 14px }
 .template li:hover { background: #666; padding: 5px 5px 6px 5px; }
-h2.title_tj { font: 18px "微软雅黑", Arial, Helvetica, sans-serif; color: #444; font-weight: bold; background: url(../images/h_line.jpg) repeat-x 20px center; }
+h2.title_tj { font: 18px "微软雅黑", Arial, Helvetica, sans-serif; color: #444; font-weight: bold; background: url(../images/h_line.jpg) repeat-x 5px center; }
 h2.title_tj span { color: #FE5187 }
-h2.title_tj p { background: #fff; width: 90px }
-.bloglist { width: 740px; overflow: hidden; background: url(../images/r_line.jpg) repeat-y right; }
-.bloglist h3 { margin: 20px 0 10px 0; color: #333 }
+h2.title_tj p { background: #fff; width: 90px;font-size:24px}
+.bloglist { width: 77%; overflow: hidden; background: url(../images/r_line.jpg) repeat-y right; }
+.bloglist h3 { margin: 20px 0 10px 0; color: #333; font-size: 20px }
 .bloglist figure { float: left; width: 183px; }
 .bloglist figure img { padding: 4px; border: #f4f2f2 1px solid; width: 175px; }
-.bloglist ul { float: left; width: 520px; margin: 10px 0px 0 15px; line-height: 20px; }
-.dateview { width: 695px; overflow: hidden; clear: both; margin: 10px 0 0 0; display: inline-block; background: #f6f6f6 url(../images/time.jpg) 15px center no-repeat; line-height: 26px; height: 26px; color: #838383; padding-left: 25px }
+.bloglist ul { float: left; width: 96%; margin: 10px 0px 0 10px; line-height: 20px; font-size: 14px}
+.dateview { width: 96%; overflow: hidden; clear: both; margin: 10px 0 0 0; display: inline-block; background: #f6f6f6 url(../images/time.jpg) 15px center no-repeat; line-height: 26px; height: 26px; color: #838383; padding-left: 25px }
 .dateview span { margin: 0 10px; }
 .dateview span a { color: #099B43; }
 a.readmore { background: #6666ff; color: #fff; padding: 5px 5px; float: right; margin: 70px 0 0 0 }
 .weather { background: url(../images/weather_bg.jpg) no-repeat; height: 88px; margin: 20px 0;padding: 20px 0 0 75px; }
-.news h3 { font-size: 14px; background: url(../images/r_title_bg.jpg) repeat-x center }
+.news h3 { font-size: 16px; background: url(../images/r_title_bg.jpg) repeat-x center }
 .news h3 p { background: #fff; width: 70px }
 .news h3 span { color: #65b020 }
-.news h3.ph span { color: #37ccca; }
+.news h3.ph span { color: #37ccca;font-size: 16px; }
 .news h3.links span { color: #F17B6B; }
 .news ul { margin-bottom: 20px }
 .news ul li a:hover { text-decoration: underline }
@@ -222,8 +222,7 @@ a.readmore { background: #6666ff; color: #fff; padding: 5px 5px; float: right; m
 .rank { margin: 10px 0 }
 .rank li a { color: #333; }
 .paih { background: url(../images/ph.jpg) no-repeat left 8px; margin: 10px 0 }
-.paih li { line-height: 30px; height: 30px; overflow: hidden; padding-left: 24px; border-bottom: #CCC dotted 1px }
+.paih li { line-height: 30px; height: 30px; overflow: hidden; padding-left: 24px; border-bottom: #CCC dotted 1px;font-size: 14px }
 .website { margin: 10px 0; background: #F3F3F3; border-radius: 50%; text-align: center; }
 .website li { line-height: 26px; text-shadow: #fff 1px 1px 1px; height: 26px; }
-.weixin { background: url(../images/weixin.jpg) no-repeat; width: 100%; display: inline-block; height: 274px; overflow: hidden; margin: 10px 0; clear: both }
 
