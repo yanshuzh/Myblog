@@ -3,21 +3,21 @@
 <div class="span9" id="content">
     <div class="block">
             <div class="navbar navbar-inner block-header">
-                <div class="muted pull-left">Just About me</div>
+                <div class="muted pull-left">个人资料：</div>
             </div>
             <div class="block-content collapse in">
                 <div class="span12">
                     <form method="post" action="/admin/about" class="form-horizontal">
                       <fieldset>
-                        <legend>Edit</legend>
+                        <legend style="font-size:20px">编辑个人简介：</legend>
                         <div class="control-group">
-                         <textarea name="aboutme_text" class="input-xlarge textarea" placeholder="{{ aboutme_markdown }}" style="width: 880px; height: 200px"></textarea>
+                         <textarea name="aboutme_text" class="input-xlarge textarea" placeholder="{% raw aboutme %}" style="width: 90%; height: 200px"></textarea>
                         </div>
-                    <div class="muted pull-right">
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                      <button type="reset" class="btn">Cancel</button>
-                    </div>
-                  </fieldset>
+                        <div class="muted pull-right ">
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                          <button type="reset" class="btn">Cancel</button>
+                        </div>
+                      </fieldset>
                   {% raw xsrf_form_html() %}
                   </form>
             </div>

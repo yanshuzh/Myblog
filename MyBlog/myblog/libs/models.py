@@ -27,8 +27,8 @@ class GetDBdata(object):
 		return	total_record
 
 	def get_total_record_by_classify(self,classifyid):
-		total_post = self.db.query("SELECT * FROM posts WHERE classifyid=%s",classifyid)
-		total_record = math.ceil(len(total_post)/5)
+		total_post = self.db.get("SELECT COUNT(*) FROM posts WHERE classifyid=%s",classifyid)
+		total_record = math.ceil(total_post['COUNT(*)']/5)
 		return total_record
 
 	def get_current_record_post_by_classify(self,current_record,step,classifyid):

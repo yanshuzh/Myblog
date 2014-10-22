@@ -120,12 +120,12 @@ class AuthAboutHandler(BaseHandler,GetUserData):
     @tornado.web.authenticated
     def get(self):
         user = self.get_user_by_id(1)
-        self.render("admin/about.html",aboutme_markdown=user.aboutme)
+        self.render("admin/about.html",aboutme=user.aboutme)
     @tornado.web.authenticated
     def post(self):
         aboutme_text = self.get_argument("aboutme_text",None)
-        aboutme_markdown = markdown.markdown(aboutme_text)
-        user = self.set_user_aboutme(1,aboutme_markdown)
+        aboutme = markdown.markdown(aboutme_text)
+        user = self.set_user_aboutme(1,aboutme)
         self.redirect("/admin/about")
 
 class AuthClassifyHandler(BaseHandler,ClassifyData):
@@ -174,10 +174,11 @@ class AuthMoodHandler(BaseHandler,GetMoodDBData):
             self.delete_moodpost_record_by_id(int(moodid))
         self.redirect("/admin/mood/1")
 
-class AuthNewArticleHandler(BaseHandler,GetDBdata):
+class AuthNewArticleHandler(BaseHandler,GetDBdata,ClassifyData):
     @tornado.web.authenticated
     def get(self):
-        self.render("admin/newarticle.html")
+        classify = self.get_classify()
+        self.render("admin/newarticle.html",classify=classify)
     @tornado.web.authenticated
     def post(self):
         article = {}
@@ -228,20 +229,6 @@ class AuthResultArticleHandler(BaseHandler,GetDBdata,ClassifyData):
         else:pass
         self.redirect("/admin/article/1")
 
-class AuthSearchHandler(BaseHandler,GetDBdata):
-    @tornado.web.authenticated
-    def post(self):
-        articletitle = self.get_argument("search_title",None)
-        if not articletitle:
-            self.redirect("/admin/article/1")
-            return
-        post = self.get_post_by_title(articletitle)
-        if not post:
-            self.redirect("/admin/article/1")
-            return
-        self.render("admin/resultarticle.html",post=post)
-
-
 handlers = [
     (r"/", HomeHandler),
     (r"/about", AboutHandler),
@@ -257,7 +244,6 @@ handlers = [
     (r"/admin/moodnew",AuthMoodNewHandler),   
     (r"/admin/newarticle",AuthNewArticleHandler),
     (r"/admin/resultarticle/(\d+)",AuthResultArticleHandler),
-    (r"/admin/search",AuthSearchHandler),
     (r"/admin/logout", AuthLogoutHandler),
 ]
 

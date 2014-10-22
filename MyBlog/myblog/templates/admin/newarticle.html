@@ -3,30 +3,28 @@
 <div class="span9" id="content">
     <div class="block">
             <div class="navbar navbar-inner block-header">
-                <div class="muted pull-left">New article</div>
+                <div class="muted pull-left">添加新文</div>
             </div>
             <div class="block-content collapse in">
                 <div class="span12">
                     <form method="post" action="newarticle"class="form-horizontal">
                         <fieldset>
-                        <legend>Edit New</legend>
+                        <legend style="font-size:20px">编辑新文</legend>
                         <div class="control-group">
-                            <input name="articletitle" type="text" class="span6" id="typeahead" data-provide="typeahead" placeholder="Blog Title">
+                            <b style="font-size:20px">文章标题：</b>
+                            <input name="articletitle" type="text" class="span6" id="typeahead" style="width: 80%;" placeholder="Please Input The Article's Title">
                         </div>
                         <div class="control-group">
-                            <div >
-                            <textarea name="articlecontent" class="input-xlarge textarea" placeholder="Blog Content ..." style="width: 880px; height: 600px"></textarea>
-                            </div>
+                            <b style="font-size:20px">文章内容：</b>
+                            <textarea name="articlecontent" class="input-xlarge textarea" placeholder="Please Input The Article's Content ..." style="width: 90%; height: 600px"></textarea>
                         </div>
                         <div class="control-group">
-                            <div>
-                                <select name="articleclassifyid" id="select01" class="chzn-select">
-                                <option value="1">日记</option>
-                                <option value="2">程序人生</option>
-                                <option value="3">欣赏</option>
-                                <option value="4">笔记</option>
-                                </select>
-                            </div>
+                            <select name="articleclassifyid" id="select01" class="chzn-select">
+                                <option value="1">{{classify[0]}}</option>
+                                <option value="2">{{classify[1]}}</option>
+                                <option value="3">{{classify[2]}}</option>
+                                <option value="4">{{classify[3]}}</option>
+                            </select>
                         </div>
                         <div class="control-group">
                             <input class="input-file uniform_on" id="fileInput" type="file">

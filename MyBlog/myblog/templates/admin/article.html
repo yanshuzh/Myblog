@@ -3,33 +3,24 @@
 <div class="span9" id="content">
     <div class="block">
             <div class="navbar navbar-inner block-header">
-                <div class="muted pull-left">Edit Article</div>
-                <div class="muted pull-right"><a href="/admin/newarticle">New Article</a></div>
+                <div class="muted pull-left" ><span style="font-size=18px">编辑文章</span></div>
+                <div class="muted pull-right"><a href="/admin/newarticle" style="font-size=18px">新文章</a></div>
             </div>
             <div class="block-content collapse in">
                 <div class="span12">
                     <fieldset>
-                    <legend>
-                        <div class="muted pull-left" style="color:black;">Article List</div>
-                            <div class="muted pull-right">
-                                <form method="post" action="/admin/search"class="form-horizontal">
-                                    <div class="controls">
-                                    <input name="search_title" type="text" class="span6" id="typeahead">
-                                    <button type="submit" class="btn">Search</button>
-                                </div>
-                                {% raw xsrf_form_html() %}
-                                </form>                         
-                            </div>
+                        <legend>
+                            <div class="muted pull-left" style="color:black;font-size=20px">文章列表：</div>
                         </legend>
-                        <div class="control-group">
+                        <div class="control-group" >
                         <script type="text/javascript">
                         var startindex = ({{record[1]}}-1)*10+1
                         document.write("<ol start="+startindex+">")
                         </script>
                         {% for post in posts %}
                         <li>
-                            <div style="width:840px;overflow:hidden">
-                            <a href="/admin/resultarticle/{{post.id}}"><b>{{post.title}}</b></a></div>
+                            <div style="width:860px;overflow:hidden">
+                            <a href="/admin/resultarticle/{{post.id}}"><b style="font-size:20px;word-wrap:break-word;">{{post.title}}</b></a></div>
                             <div>
                             <span>发布时间：{{post.published}}</span>
                             </div>

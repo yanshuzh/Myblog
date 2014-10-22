@@ -3,23 +3,23 @@
 <div class="span9" id="content">
     <div class="block">
             <div class="navbar navbar-inner block-header">
-                <div class="muted pull-left">Edit Mood</div>
-                <div class="muted pull-right"><a href="/admin/moodnew">New Mood</a></div>
+                <div class="muted pull-left">心情管理</div>
+                <div class="muted pull-right"><a href="/admin/moodnew">添加心情</a></div>
             </div>
             <div class="block-content collapse in">
                 <div class="span12">
                     <form method="post" action="/admin/mood/{{moodrecord[1]}}"class="form-horizontal">
                         <fieldset>
-                        <legend>Mood List</legend>
+                        <legend style="font-size:20px">心情列表：</legend>
                         <div class="control-group">
                         <script type="text/javascript">
                         var startindex = ({{moodrecord[1]}}-1)*10+1
                         document.write("<ol start="+startindex+">")
                         </script>
                         {% for moodpost in moodposts %}
-                        <li>
-                            <div style="width:600px;overflow:hidden">
-                                <a><b>{{moodpost.content}}</b></a>
+                        <li style="width:90%;">
+                            <div>
+                                <a><b style="font-size:20px;word-wrap:break-word;">{{moodpost.content}}</b></a>
                             </div>
                             <div class="lines"></div>
                             <div>

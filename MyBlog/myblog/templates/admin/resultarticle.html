@@ -3,21 +3,22 @@
 <div class="span9" id="content">
     <div class="block">
             <div class="navbar navbar-inner block-header">
-                <div class="muted pull-left">Result</div>
+                <div class="muted pull-left">编辑文章</div>
             </div>
             <div class="block-content collapse in">
                 <div class="span12">
                     <form method="post" action="/admin/resultarticle/{{post.id}}"class="form-horizontal">
                         <fieldset>
-                        <legend>Edit</legend>
+                        <legend style="font-size:20px">编辑</legend>
                         <div class="control-group">
-                            <b>BlogID: </b><input name="articleid" type="text" class="span6" id="typeahead" data-provide="typeahead" value="{{post.id}}" readonly="readonly">
+                            <input name="articleid" type="hidden" class="span6" id="typeahead" data-provide="typeahead" value="{{post.id}}" readonly="readonly">
                         </div>                      
                         <div class="control-group">
-                            <b>&nbsp; Title: &nbsp;&nbsp;</b><input name="articletitle" type="text" class="span6" id="typeahead" data-provide="typeahead" placeholder="Blog Title" value="{{post.title}}">
+                            <b style="font-size:20px">文章标题：</b><input style="width:80%" name="articletitle" type="text" class="span6" id="typeahead" data-provide="typeahead" placeholder="Blog Title" value="{{post.title}}">
                         </div>
                         <div class="control-group">
-                            <textarea name="articlecontent" class="input-xlarge textarea" placeholder="Enter text ..." style="width: 880px; height: 600px">{{post.markdown}}</textarea>
+                            <b style="font-size:20px">文章内容：</b>
+                            <textarea name="articlecontent"  placeholder="Enter text ..." style="width: 90%; height: 600px">{{post.markdown}}</textarea>
 
                         </div>
                         <div class="control-group">
