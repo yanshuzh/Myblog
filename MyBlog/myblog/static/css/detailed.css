@@ -6,7 +6,7 @@ h1.t_nav { border-bottom: #F1F1F1 1px solid; font-size: 12px; font-weight: norma
 a.n1, a.n2 { width: 100px; display: block; text-align: center; color: #fff; float: left }
 .n1 { background: #5EA51B; }
 .n2 { background: #8BBF5D; }
-.index_about { float: left; width: 77%; overflow: hidden; background: url(../images/r_line.jpg) repeat-y right; margin: 10px 0 }
+.index_about { float: left; width: 100%; overflow: hidden;  margin: 10px 0 }
 .c_titile { font-size: 22px; margin: 20px 0; text-align: center }
 .box_c { border: #ccc 1px dashed; text-align: center; padding: 5px 0; margin-right: 30px;color: #999;}
 .box_c span { margin: 0 10px; }

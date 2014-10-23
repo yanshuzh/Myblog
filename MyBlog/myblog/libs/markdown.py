@@ -2,18 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import re
-from StringIO import StringIO
 import misaka as m
-
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
-
 from tornado.escape import to_unicode
 from tornado.escape import xhtml_escape
 
 
-class AkioRender(m.HtmlRenderer, m.SmartyPants):
+class BlogRender(m.HtmlRenderer, m.SmartyPants):
 
     def block_code(self, text, lang):
         if lang:
@@ -58,7 +55,7 @@ class AkioRender(m.HtmlRenderer, m.SmartyPants):
 
 def markdown(text):
     text = to_unicode(text)
-    render = AkioRender(flags=m.HTML_USE_XHTML)
+    render = BlogRender(flags=m.HTML_USE_XHTML)
     md = m.Markdown(
         render,
         extensions=m.EXT_FENCED_CODE | m.EXT_AUTOLINK,

@@ -29,48 +29,13 @@
       {% end %}
     </div>
     <div class="otherlink">
-      <h2>常用链接</h2>
+      <h2>最新文章链接</h2>
       <ul>
-        <li><a href="/news/s/2013-07-25/524.html" title="现在，我相信爱情！">现在，我相信爱情！</a></li>
-        <li><a href="/newstalk/mood/2013-07-24/518.html" title="我希望我的爱情是这样的">我希望我的爱情是这样的</a></li>
-        <li><a href="/newstalk/mood/2013-07-02/335.html" title="有种情谊，不是爱情，也算不得友情">有种情谊，不是爱情，也算不得友情</a></li>
-        <li><a href="/newstalk/mood/2013-07-01/329.html" title="世上最美好的爱情">世上最美好的爱情</a></li>
-        <li><a href="/news/read/2013-06-11/213.html" title="爱情没有永远，地老天荒也走不完">爱情没有永远，地老天荒也走不完</a></li>
-        <li><a href="/news/s/2013-06-06/24.html" title="爱情的背叛者">爱情的背叛者</a></li>
-      </ul>
-    </div>
-  </div>
-  <aside class="right">
-    <div class="blank"></div>
-    <div class="news">
-      <h3>
-        <p>栏目最新</p>
-      </h3>
-      <div class="about_c">
-      <p>网名：<span>DanceSmile</span> | 即步非烟</p>
-      <p>姓名：庄衍竖 </p>
-      <p>生日：1990-10-23</p>
-      <p>籍贯：广东省-揭西县</p>
-      <p>现居：广东省-广州市</p>
-      <p>职业：网站设计、网站制作</p>
-      <p>喜欢的书：test</p>
-      <p>喜欢的音乐：《burning》《just one last dance》《相思引》</p>
-      <h3 class="ph">
-        <p>点击排行</p>
-      </h3>
-      <ul class="paih">
         {% for childpost in bestposts %}
         <li><a href="/detailed/{{childpost.id}}" title="{{childpost.title}}" target="_blank">{{childpost.title}}</a></li>
         {% end %}
       </ul>
     </div>
-    <div class="visitors">
-      <h3>
-        <p>最近访客</p>
-      </h3>
-      <ul>
-      </ul>
-    </div>
-  </aside>
+  </div> 
 </article>
 {% end %}

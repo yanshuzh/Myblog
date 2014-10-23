@@ -206,7 +206,7 @@ h2.title_tj p { background: #fff; width: 90px;font-size:24px}
 .bloglist figure { float: left; width: 183px; }
 .bloglist figure img { padding: 4px; border: #f4f2f2 1px solid; width: 175px; }
 .bloglist ul { float: left; width: 96%; margin: 10px 0px 0 10px; line-height: 20px; font-size: 14px}
-.dateview { width: 96%; overflow: hidden; clear: both; margin: 10px 0 0 0; display: inline-block; background: #f6f6f6 url(../images/time.jpg) 15px center no-repeat; line-height: 26px; height: 26px; color: #838383; padding-left: 25px }
+.dateview { font-size:16px;width: 96%; overflow: hidden; clear: both; margin: 10px 0 0 0; display: inline-block; background: #f6f6f6 url(../images/time.jpg) 15px center no-repeat; line-height: 26px; height: 26px; color: #838383; padding-left: 25px }
 .dateview span { margin: 0 10px; }
 .dateview span a { color: #099B43; }
 a.readmore { background: #6666ff; color: #fff; padding: 5px 5px; float: right; margin: 70px 0 0 0 }
