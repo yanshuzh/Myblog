@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 <title>个人博客</title>
 <meta name="keywords" content="个人博客" />
-<meta name="description" content="寻梦主题的个人博客。" />
+<meta name="description" content="个人博客。" />
 <link href="{{static_url('css/base.css')}}" rel="stylesheet">
 <link href="{{static_url('css/pygments.css')}}" rel="stylesheet">
 <link href="{{static_url('css/detailed.css')}}" rel="stylesheet">
@@ -14,51 +14,30 @@
 </head>
 <body>
 <header>
-  <div id="logo"><a href="/"></a></div>
-  <nav class="topnav" id="topnav"><a href="/"><span>Home</span><span class="en">Protal</span></a><a href="/about"><span>About me </span><span class="en">About</span></a><a href="/newlist/1"><span>Aritcle</span><span class="en">Life</span></a><a href="/moodlist/1"><span>Feeling</span><span class="en">Doing</span></a></nav>
+  <nav class="topnav" id="topnav"><a href=""><span>首页</span><span class="en"></span></a><a href=""><span>关于</span><span class="en"></span></a><a href=""><span>文章</span><span class="en"></span></a><a href=""><span>杂谈</span><span class="en"></span></a><a href=""><span>标签</span><span class="en"></span></a></nav>
   </nav>
 </header>
 <article class="blogs">
-  <h1 class="t_nav"><span>您当前的位置：<a>首页</a>&nbsp;&gt;&nbsp;<a>生活</a>&nbsp;&gt;&nbsp;<a>预览</a></span><a class="n1">Home</a><a class="n2">预览</a></h1>
+  <h1 class="t_nav"><span>您当前的位置：<a>首页</a>&nbsp;&gt;&nbsp;<a>生活</a>&nbsp;&gt;&nbsp;<a>预览</a></span><a class="n1">Home</a><a class="n2" href="/admin/resultarticle/{{article["id"]}}">预览返回</a></h1>
   <div class="index_about">
     <h2 class="c_titile">{{ article["title"] }}</h2>
-    <p class="box_c"><span class="d_time">发布时间：2014-10-23 11:11:11</span><span>编辑：yanshu</span></p>
+    <p class="box_c" style="font-size:16px"><span class="d_time">发布时间：2014-10-23 11:11:11</span><span>编辑：yanshu</span></p>
     <ul class="infos">
       {% raw article["html"] %}
     </ul>
     <div class="keybq">
-    <p><span>关键字词</span>：</p>
+    <p style="font-size:16px"><span>标签</span>：</p>
     
     </div>
     <div class="ad"> </div>
-    <div class="nextinfo">
+    <div class="nextinfo" style="font-size:16px">
       <p>上一篇：<a>上一篇</a></p>
       <p>下一篇：<a>下一篇</a></p>
     </div>
-    <div class="otherlink">
+    <div class="otherlink" style="font-size:16px">
       <h2>常用链接</h2>
     </div>
   </div>
-  <aside class="right">
-    <div class="blank"></div>
-    <div class="news">
-      <h3>
-        <p>栏目最新</p>
-      </h3>
-      <div class="about_c">
-      <p>网名：<span>DanceSmile</span> | 即步非烟</p>
-      <p>姓名：庄衍竖 </p>
-      <p>生日：1990-10-23</p>
-      <p>籍贯：广东省-揭西县</p>
-      <p>现居：广东省-广州市</p>
-      <p>职业：网站设计、网站制作</p>
-      <p>喜欢的书：test</p>
-      <p>喜欢的音乐：《burning》《just one last dance》《相思引》</p>
-      <h3 class="ph">
-        <p>点击排行</p>
-      </h3>
-    </div>
-  </aside>
 </article>
 <footer>
   <p>Design by yanshuzh <a target="_blank">lab501</a> <a>2014</a></p>

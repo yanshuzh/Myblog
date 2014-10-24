@@ -7,18 +7,18 @@
   <h1 class="t_nav"><span>您当前的位置：<a href="/">首页</a>&nbsp;&gt;&nbsp;<a href="/newlist/1">生活</a>&nbsp;&gt;&nbsp;<a href="/newlist/1">{{post.classifyname}}</a></span><a href="/" class="n1">Home</a><a href="/classify/{{post.classifyid}}/1" class="n2">{{post.classifyname}}</a></h1>
   <div class="index_about">
     <h2 class="c_titile">{{ post.title }}</h2>
-    <p class="box_c"><span class="d_time">发布时间：{{ post.published }}</span><span>编辑：yanshu</span></p>
+    <p class="box_c" style="font-size:16px"><span class="d_time">发布时间：{{ post.published }}</span><span>编辑：yanshu</span></p>
     <ul class="infos">
       {% raw post.html %}
     </ul>
     <div class="keybq">
-    <p><span>关键字词</span>：</p>
+    <p style="font-size:16px"><span>标签</span>：{{tags}}</p>
     
     </div>
     <div class="ad"> </div>
-    <div class="nextinfo">
+    <div class="nextinfo" style="font-size:16px">
       {% if beforepost %}
-      <p>上一篇：<a href="/detailed/{{beforepost.id}}">{{beforepost.title}}}</a></p>
+      <p>上一篇：<a href="/detailed/{{beforepost.id}}">{{beforepost.title}}</a></p>
       {% else %}
       <p>上一篇：<a href="/detailed/{{post.id}}">{{post.title}}</a></p>
       {% end %}
@@ -28,8 +28,8 @@
       <p>下一篇：<a href="/detailed/{{post.id}}">{{post.title}}</a></p>
       {% end %}
     </div>
-    <div class="otherlink">
-      <h2>最新文章链接</h2>
+    <div class="otherlink" style="font-size:16px">
+      <h2 style="font-size:16px">最新文章链接</h2>
       <ul>
         {% for childpost in bestposts %}
         <li><a href="/detailed/{{childpost.id}}" title="{{childpost.title}}" target="_blank">{{childpost.title}}</a></li>

@@ -15,6 +15,10 @@
                             <input name="articletitle" type="text" class="span6" id="typeahead" style="width: 80%;" placeholder="Please Input The Article's Title">
                         </div>
                         <div class="control-group">
+                            <b style="font-size:20px">文章标签：</b>
+                            <input name="articletag" type="text" class="span6" id="typeahead" style="width: 80%;" placeholder="Please Input The Article's Title">
+                        </div>
+                        <div class="control-group">
                             <b style="font-size:20px">文章内容：</b>
                             <textarea name="articlecontent" class="input-xlarge textarea" placeholder="Please Input The Article's Content ..." style="width: 90%; height: 600px"></textarea>
                         </div>
@@ -31,7 +35,7 @@
                         </div>
                         <div class="muted pull-right">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="reset" class="btn">Cancel</button>
+                            <button type="reset" class="btn btn-primary">Cancel</button>
                         </div>
                         </fieldset>
                     {% raw xsrf_form_html() %}

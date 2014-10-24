@@ -17,6 +17,9 @@
                             <b style="font-size:20px">文章标题：</b><input style="width:80%" name="articletitle" type="text" class="span6" id="typeahead" data-provide="typeahead" placeholder="Blog Title" value="{{post.title}}">
                         </div>
                         <div class="control-group">
+                            <b style="font-size:20px">文章标签：</b><input style="width:80%" name="articletag" type="text" class="span6" id="typeahead" data-provide="typeahead" placeholder="Blog Tags" value="{{tags}}">
+                        </div>
+                        <div class="control-group">
                             <b style="font-size:20px">文章内容：</b>
                             <textarea name="articlecontent"  placeholder="Enter text ..." style="width: 90%; height: 600px">{{post.markdown}}</textarea>
 
@@ -35,7 +38,7 @@
                         <div class="muted pull-right">
                             <input type="submit" name="buttonsubmit" class="btn btn-primary" value="Submit"></input>
                             <input type="submit" name="buttondelete" class="btn btn-primary" value="Delete"></input>
-                            <input type="reset" class="btn" value="Cancel"></input>
+                            <input type="reset" class="btn btn-primary" value="Cancel"></input>
                         </div>
                         </fieldset>
                     {% raw xsrf_form_html() %}

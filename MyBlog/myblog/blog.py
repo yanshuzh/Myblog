@@ -5,7 +5,7 @@ import re
 import torndb
 import unicodedata
 import tornado.web
-from .libs.models import GetDBdata,GetUserData,GetMoodDBData,ClassifyData
+from .libs.models import GetDBdata,GetUserData,GetMoodDBData,ClassifyData,GetTagsData
 from .libs.markdown import markdown
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -86,11 +86,33 @@ class DetailedHandler(BaseHandler,GetDBdata,ClassifyData):
         if not post:return
         #文章点击量加一
         self.add_readcount_by_id(postid)
+        tags = self.get_tagname_by_postid(postid)
         beforepost = self.get_post_by_id(int(postid)-1)
         afterpost = self.get_post_by_id(int(postid)+1)
         bestposts = self.get_sortpostby_readcount(5)
-        self.render("detailed.html",post=post,beforepost=beforepost,afterpost=afterpost,bestposts=bestposts,classify=classify)
+        self.render("detailed.html",post=post,beforepost=beforepost,afterpost=afterpost,bestposts=bestposts,classify=classify,tags=tags)
 
+class TagsHandler(BaseHandler,GetTagsData):
+    def get(self):
+        #get all the tags and their number
+        total_tags = self.get_total_tags()
+        self.render("taglist.html",total_tags=total_tags)
+
+class TagResultandler(BaseHandler,GetDBdata,ClassifyData):
+    def get(self,tagid,current_record):        
+        #获取文章分类名称
+        classify = self.get_classify()
+        #获取TAG文章总页数
+        total_record = self.get_total_record_by_tagid(tagid,5)
+        #获取当前页、前一页、后一页的文章记录
+        posts = self.get_current_record_post_by_tagid(int(current_record),tagid,5)
+        before_record = 1 if int(current_record)<=1 else (int(current_record)-1)
+        after_record = int(total_record) if int(current_record)+1 > total_record else (int(current_record)+1)
+        record = [before_record,int(current_record),after_record]
+        if not posts:pass
+            #self.redirect("/compose")
+            #return
+        self.render("newlist.html",posts=posts,total_record=int(total_record),record=record,classify=classify)
 #Admin管理!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 class AuthLoginHandler(BaseHandler,GetUserData):
@@ -163,27 +185,29 @@ class AuthResultArticleHandler(BaseHandler,GetDBdata,ClassifyData):
     def get(self,articleid):
         classify = self.get_classify()
         post = self.get_post_by_id(articleid)
-        self.render("admin/resultarticle.html",post=post,classify=classify)
+        tags= self.get_tagname_by_postid(articleid)
+        #self.render("admin/test.html",test=test)
+        self.render("admin/resultarticle.html",post=post,classify=classify,tags=tags)
     @tornado.web.authenticated
     def post(self,articleid):
         classify = self.get_classify()
         buttonsubmit = self.get_argument("buttonsubmit",None)
         buttondelete = self.get_argument("buttondelete",None)
         article = {}
-        article["id"]=self.get_argument("articleid",None)
-        article["title"] = self.get_argument("articletitle",None)
-        article["content"] = self.get_argument("articlecontent",None)
+        article["id"]=self.get_argument("articleid")
+        article["title"] = self.get_argument("articletitle")
+        article["tag"] = self.get_argument("articletag")
+        article["content"] = self.get_argument("articlecontent")
         #article["html"] = markdown.markdown(article["content"])
-        
         article["html"] =markdown(article["content"])
         
-        article["classifyid"] = self.get_argument("articleclassifyid",None)
+        article["classifyid"] = self.get_argument("articleclassifyid")
         if buttonsubmit=="Submit":
-            self.change_post_record(article)
+            test = self.change_post_record(article)
             post = self.get_post_by_id(article["id"])
-            #self.render("admin/resultarticle.html",post=post,classify=classify)
-            self.render("admin/preview.html",article=article)
-            #self.render("admin/test.html",articleid=article["id"])
+            tags = self.get_tagname_by_postid(article["id"])
+            self.render("admin/preview.html",article=article,tags=tags)
+            #self.render("admin/test.html",test=test)
             return
         elif buttondelete=="Delete":
             self.delete_post_record(article)
@@ -198,13 +222,14 @@ class AuthNewArticleHandler(BaseHandler,GetDBdata,ClassifyData):
     @tornado.web.authenticated
     def post(self):
         article = {}
-        article["title"] = self.get_argument("articletitle",None)
-        article["content"] = self.get_argument("articlecontent",None)
-        article["classifyid"] = self.get_argument("articleclassifyid",None)
+        article["title"] = self.get_argument("articletitle")
+        article["content"] = self.get_argument("articlecontent")
+        article["classifyid"] = self.get_argument("articleclassifyid")
+        article["tag"] = self.get_argument("articletag")
         #article["html"] = markdown.markdown(article["content"])
         article["html"] =markdown(article["content"])
-        self.add_post_record(article)
-        #self.redirect("/admin/preview")
+        test = self.add_post_record(article)
+        #self.render("admin/test.html",test=test)
         self.render("admin/preview.html",article=article)
 
 #心情状态管理
@@ -243,6 +268,8 @@ handlers = [
     (r"/classify/(\d+)/(\d+)", ClassifyHandler),    
     (r"/moodlist/(\d+)", MoodHandler),
     (r"/detailed/(\d+)", DetailedHandler),
+    (r"/tagslist", TagsHandler),
+    (r"/tag/(\d+)/(\d+)", TagResultandler),
     (r"/admin/login", AuthLoginHandler),
     (r"/admin/logout", AuthLogoutHandler),    
     (r"/admin/about",AuthAboutHandler),

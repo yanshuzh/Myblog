@@ -3,8 +3,22 @@
 from __future__ import division
 import math
 
+class GetTagsData(object):
+	def add_tagcount_by_name(self,tagname):
+		self.db.execute("UPDATE tags SET tagcount=tagcount+1 WHERE tagname=%s",tagname)
+	def get_total_tags(self):
+		total_tags = self.db.query("SELECT * FROM tags")
+		return total_tags 
+	def get_tag_by_id(self,tagid):
+		tag = self.db.get("SELECT * FROM tags WHERE id=%s",tagid)
+		return tag
+	def get_id_by_tagname(self,tagname):
+		tag = self.db.get("SELECT * FROM tags WHERE tagname=%s",tagname)
+		if not tag :return None
+		return tag.id
+
 #文章信息数据库posts处理类
-class GetDBdata(object):
+class GetDBdata(GetTagsData):
 	#获取最新发表的文章，数量为count
 	def get_sortpostby_published(self,count):
 		posts = self.db.query("SELECT * FROM posts ORDER BY published DESC LIMIT %s",int(count))
@@ -43,28 +57,112 @@ class GetDBdata(object):
 		end = step
 		posts = self.db.query("SELECT * FROM posts WHERE classifyid=%s ORDER BY published LIMIT %s,%s",classifyid,start,end)
 		return posts
+	#获取特定TAG的文章页数，每页为step篇
+	def get_total_record_by_tagid(self,tagid,step):
+		total_post = self.db.get("SELECT COUNT(*) FROM postandtag WHERE tagid=%s",tagid)
+		total_record = math.ceil(total_post['COUNT(*)']/step)
+		return total_record 
+	#获取当前页数的step篇特定TAG的文章
+	def get_current_record_post_by_tagid(self,current_record,tagid,step):
+		start = (int(current_record)-1)*step
+		end = step
+		posts = self.db.query("SELECT * FROM posts WHERE id IN (SELECT postid FROM postandtag WHERE tagid=%s)",tagid)
+		return posts	
+	#获得文章id为postid的标签名
+	def get_tagname_by_postid(self,postid):
+		tagnames = self.db.query("SELECT tagname FROM tags WHERE id IN (SELECT tagid FROM postandtag WHERE postid=%s)",postid)
+		#tagnamelist=[]
+		#for tagname in tagnames:
+		#	tagnamelist.append(tagname["tagname"])
+		##tagnamelist = [tagname["tagname"] for tagname in tagnames]
+		return ",".join([tagname["tagname"] for tagname in tagnames])
 	#删除文章
 	def delete_post_record(self,article):
+		oldtagids = self.db.query("SELECT tagid FROM postandtag WHERE postid=%s",article["id"])
+		if oldtagids:
+			#oldtagidlists=[]
+			#得到旧的标签ID
+			#for oldtagid in oldtagids:
+			#	oldtagidlists.append(oldtagid["tagid"])
+			for oldtagidvalue in [oldtag["tagid"] for oldtag in oldtagids]:
+				self.db.execute("UPDATE tags SET tagcount = tagcount-1 WHERE id = %s",oldtagidvalue)
+				oldtag = self.db.get("SELECT * FROM tags WHERE id=%s",oldtagidvalue)
+				if oldtag and oldtag["tagcount"] < 1:
+					self.db.execute("DELETE FROM tags WHERE id=%s",oldtagidvalue)
+		self.db.execute("DELETE FROM postandtag WHERE postid=%s",article["id"])
 		self.db.execute("DELETE FROM posts WHERE id=%s",article["id"])
 		self.db.execute("UPDATE authors SET record = record-1 WHERE id = %s",int(1))
 	#添加文章
 	def add_post_record(self,article):
-		classifyid = int(article["classifyid"])
 		#获取文章类别id对应的类别名称
-		classify = self.db.get("SELECT * FROM classify WHERE classifyid=%s",classifyid)
-		#添加文章信息到posts数据库，作者发表文章数量加一
-		self.db.execute("INSERT INTO posts (author_id,title,markdown,html,published,classifyid,classifyname) VALUES (%s,%s,%s,%s,UTC_TIMESTAMP(),%s,%s)",int(1),article["title"],article["content"],article["html"],classifyid,classify.classifyname)
+		classify = self.db.get("SELECT * FROM classify WHERE classifyid=%s",int(article["classifyid"]))
+		#添加文章信息到posts数据库，作者发表文章数量加一	
 		self.db.execute("UPDATE authors SET record = record+1 WHERE id = %s",int(1))
+		postid = self.db.execute("INSERT INTO posts (author_id,title,markdown,html,published,classifyid,classifyname) VALUES (%s,%s,%s,%s,UTC_TIMESTAMP(),%s,%s)",int(1),article["title"],article["content"],article["html"],int(article["classifyid"]),classify.classifyname)		
+		tagnames = [tag for tag in article["tag"].split(",")]
+		#仅有空格，即未添加标签时，标签列表为空
+		if tagnames==['']: return
+		tagids =[]
+		for tagname in tagnames:
+			tagid = self.get_id_by_tagname(tagname)
+			if not tagid :
+				self.db.execute("INSERT INTO tags(tagname,tagcount) VALUES(%s,%s)",tagname,0)
+				tagid = self.get_id_by_tagname(tagname)
+			self.add_tagcount_by_name(tagname)
+			tagids.append(tagid)
+		for tagid in tagids:
+			self.db.execute("INSERT INTO postandtag (tagid,postid) VALUES(%s,%s)",tagid,postid)
+		
 	#修改文章
 	def change_post_record(self,article):
 		classifyid = int(article["classifyid"])
 		#获取修改后的文章类别id对应的类别名称
 		classify = self.db.get("SELECT * FROM classify WHERE classifyid=%s",classifyid)
-		#更新文章信息到posts数据库
+		oldtagids = self.db.query("SELECT tagid FROM postandtag WHERE postid=%s",article["id"])
+		tagnames = [tag for tag in article["tag"].split(",")]
+		tagidlists = []
+		oldtagidlists =[]
+		#仅仅有空格时，标签列表为空
+		if oldtagids==['']:oldtagids=[]
+		#得到旧的标签ID
+		for oldtagid in oldtagids:
+			oldtagidlists.append(oldtagid["tagid"])
+		##仅仅有空格时，标签列表为空
+		if tagnames==['']:tagnames=[]
+		for tagname in tagnames:
+				tagid = self.get_id_by_tagname(tagname)
+				#第一次加入的新标签
+				if not tagid :
+					self.db.execute("INSERT INTO tags(tagname,tagcount) VALUES(%s,%s)",tagname,0)
+					tagid = self.get_id_by_tagname(tagname)
+					tagidlists.append(tagid)
+					self.add_tagcount_by_name(tagname)
+					self.db.execute("INSERT INTO postandtag (postid,tagid) VALUES(%s,%s)",article["id"],tagid)
+				else:
+					tagidlists.append(tagid)
+					#老标签，如果该文章引用了它,需添加到标签TD和文章ID对应表上；否则说明该标签之前已被该文章引用，不需再操作
+					if tagid not in oldtagidlists:
+						self.add_tagcount_by_name(tagname)
+						self.db.execute("INSERT INTO postandtag (postid,tagid) VALUES(%s,%s)",article["id"],tagid)
+		#得到该文章之前引用的标签，如果不在当前引用标签列表里，则执行去除该标签和文章id对应关系等操作
+		if oldtagidlists:
+			for oldtagid in oldtagidlists:
+				if oldtagid in tagidlists:pass
+				else:				
+					self.db.execute("DELETE FROM postandtag WHERE postid=%s AND tagid=%s",article["id"],oldtagid)
+					self.db.execute("UPDATE tags SET tagcount=tagcount-1 WHERE id=%s",oldtagid)
+					oldtag = self.db.get("SELECT * FROM tags WHERE id=%s",oldtagid)
+					if not oldtag:return
+					if oldtag["tagcount"] < 1:
+						self.db.execute("DELETE FROM tags WHERE id=%s",oldtagid)
+
+	#更新文章信息到posts数据库
 		self.db.execute("UPDATE posts SET title=%s,markdown=%s,html=%s,published=UTC_TIMESTAMP(),classifyid=%s,classifyname=%s WHERE id=%s",article["title"],article["content"],article["html"],classifyid,classify.classifyname,article["id"])
 	#某文章被点击阅读后点击量加一
 	def add_readcount_by_id(self,articleid):
 		self.db.execute("UPDATE posts set readcount=readcount+1 WHERE id=%s",articleid)
+
+
 
 #心情状态数据库moodlistt处理类
 class GetMoodDBData(object):

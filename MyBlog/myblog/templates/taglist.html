@@ -1,0 +1,17 @@
+﻿{% extends "base.html" %}
+{% block header %}
+<link href="{{static_url('css/tags.css')}}" rel="stylesheet">
+{% end %}
+{% block body %}
+<article>
+<h1 class="t_nav"><span>像“草根”一样，紧贴着地面，低调的存在，冬去春来，枯荣无恙。</span><a href="/" class="n1">Home</a><a href="/tagslist" class="n2">标签</a></h1>
+<div>
+<h3>所有标签:</h3>
+  <ul class="tag-box">
+    {% for tag in total_tags %}
+        <li><a href="/tag/{{tag.id}}/1" target="_blank" >{{tag.tagname}}&nbsp;<span>({{tag.tagcount}})</span></a></li>
+    {% end %}
+  </ul>
+</div>
+</article>
+{% end %}

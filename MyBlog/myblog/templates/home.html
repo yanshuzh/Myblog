@@ -16,7 +16,7 @@
       <p>{{post.markdown if post else "There is no blog article!!"}}</p>
       <a title="/" href="/detailed/{{post.id}}" target="_blank" class="readmore">阅读全文>></a>
     </ul>
-    <p class="dateview"><span>{{post.published if post else "2004-01-01"}}</span><span>作者：yanshu</span><span>个人博客：[<a href="/classify/{{post.classifyid}}/1">{{post.classifyname}}</a>]</span></p>
+    <p class="dateview"><span>{{post.published if post else "2004-01-01"}}</span><span>作者：yanshu</span><span>分类：[<a href="/classify/{{post.classifyid}}/1">{{post.classifyname}}</a>]</span></p>
     {% end %}
        
   </div>
