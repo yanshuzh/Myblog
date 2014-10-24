@@ -16,6 +16,7 @@ CREATE TABLE posts (
     published DATETIME NOT NULL,
     classifyid int NOT NULL,
     classifyname VARCHAR(20),NOT NULL,
+    readcount int NOT NULL,
     KEY (published)
 );
 
@@ -35,4 +36,25 @@ CREATE TABLE classify (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     classifyid int NOT NULL,
     classifyname VARCHAR(20),NOT NULL
+);
+
+Drop TABLE IF EXISTS postandtag;
+CREATE TABLE postandtag (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    postid int NOT NULL,
+    tagid int NOT NULL
+);
+
+Drop TABLE IF EXISTS tags;
+CREATE TABLE tags (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    tagname VARCHAR(100),
+    tagcount int NOT NULL
+);
+DROP TABLE IF EXISTS moodlist;
+CREATE TABLE moodlist (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    content MEDIUMTEXT NOT NULL,
+    published DATETIME NOT NULL,
+    author_id int NOT NULL,
 );
