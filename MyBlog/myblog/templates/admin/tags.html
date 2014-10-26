@@ -1,0 +1,29 @@
+﻿{% extends "base.html" %}
+{% block body %}
+<div class="span9" id="content">
+    <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">文章标签</div>
+            </div>
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <form method="post" action="/admin/tags" class="form-horizontal">
+                    <fieldset>
+                        <legend style="font-size:20px">标签列表:</legend>
+                        <ul class="tag-box">
+                            {% for tag in total_tags %}
+                            <li style="display:inline-block;margin:20px;font-size:16px"><a href="/tag/{{tag.id}}/1" target="_blank" >{{tag.tagname}}&nbsp;<span>({{tag.tagcount}})</span></a><input class="muted pull-right" type="checkbox" name="tagcheckbox" value="{{tag.id}}"></input></li>
+                            {% end %}
+                        </ul> 
+                        <div class="muted pull-right">
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                            <button type="reset" class="btn">Cancel</button>
+                        </div>           
+                        </fieldset>
+                    {% raw xsrf_form_html() %}
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>                
+{% end %}

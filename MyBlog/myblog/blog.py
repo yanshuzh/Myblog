@@ -228,10 +228,10 @@ class AuthNewArticleHandler(BaseHandler,GetDBdata,ClassifyData):
         article["tag"] = self.get_argument("articletag")
         #article["html"] = markdown.markdown(article["content"])
         article["html"] =markdown(article["content"])
-        test = self.add_post_record(article)
+        article["id"] = self.add_post_record(article)
         #self.render("admin/test.html",test=test)
-        self.render("admin/preview.html",article=article)
 
+        self.render("admin/preview.html",article=article)
 #心情状态管理
 class AuthMoodHandler(BaseHandler,GetMoodDBData):
     @tornado.web.authenticated
@@ -260,6 +260,19 @@ class AuthMoodNewHandler(BaseHandler,GetMoodDBData):
         mood["content"] = self.get_argument("moodcontent",None)
         self.add_mood_record(mood)
         self.redirect("/admin/moodnew")
+#标签
+class AuthTagsHandler(BaseHandler,GetTagsData):
+    @tornado.web.authenticated
+    def get(self):
+        total_tags = self.get_total_tags()
+        self.render("admin/tags.html",total_tags=total_tags)  
+    @tornado.web.authenticated
+    def post(self):
+        mytagcheckbox=self.get_arguments("tagcheckbox")
+        #self.render("admin/test.html",mycheckbox=mycheckbox)
+        for tagid in mytagcheckbox:
+            self.delete_tags_by_id(tagid)
+        self.redirect("/admin/tags")             
 
 handlers = [
     (r"/", HomeHandler),
@@ -279,5 +292,6 @@ handlers = [
     (r"/admin/moodnew",AuthMoodNewHandler),   
     (r"/admin/newarticle",AuthNewArticleHandler),
     (r"/admin/resultarticle/(\d+)",AuthResultArticleHandler),
+    (r"/admin/tags",AuthTagsHandler)
 ]
 

@@ -16,6 +16,9 @@ class GetTagsData(object):
 		tag = self.db.get("SELECT * FROM tags WHERE tagname=%s",tagname)
 		if not tag :return None
 		return tag.id
+	def delete_tags_by_id(self,tagid):
+		self.db.execute("DELETE FROM tags WHERE id=%s",tagid)
+		self.db.execute("DELETE FROM postandtag WHERE tagid=%s",tagid)
 
 #文章信息数据库posts处理类
 class GetDBdata(GetTagsData):
@@ -112,7 +115,8 @@ class GetDBdata(GetTagsData):
 			tagids.append(tagid)
 		for tagid in tagids:
 			self.db.execute("INSERT INTO postandtag (tagid,postid) VALUES(%s,%s)",tagid,postid)
-		
+
+		return postid		
 	#修改文章
 	def change_post_record(self,article):
 		classifyid = int(article["classifyid"])
